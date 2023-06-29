@@ -38,18 +38,8 @@ class JSONEnvelope(BaseEnvelope):
         """
         Extracts the data from the JSON object
         """
-        rows = (data.get("data") or data.get("body") or data)["instances"]
-        if isinstance(rows[0], dict):
-            for row_i, row in enumerate(rows):
-                if list(row.keys()) == ["b64"]:
-                    rows[row_i] = b64decode(row["b64"])
-                else:
-                    for col, col_value in row.items():
-                        if isinstance(col_value, dict) and list(col_value.keys()) == [
-                            "b64"
-                        ]:
-                            row[col] = b64decode(col_value["b64"])
-        return rows
+        rows = (data.get("data") or data.get("body") or data)
+        return [rows]
 
     def _batch_to_json(self, batch, lengths):
         """
